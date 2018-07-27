@@ -20,10 +20,36 @@ jobs:
         command: prove --verbose
     - store-artifacts:
         path: /tmp/artifacts
+    - persist_to_workspace:
+        root: /tmp/artifacts
+	paths:
+	  - all_files.tgz
+
+  test:
+    docker: [{image: "postgres:10-alpine"}]
+    steps:
+    working_directory: /tmp/sqlserver2pgsql
+    attach_worskpace:
+      at: /tmp/artifacts
+    steps:
+    - run:
+        name: Install debian packages
+    - checkout
+    - run:
+        name: Executing tests
+        environment:
+        command: |
+	  tar xzf /tmp/artifacts/all_files.tgz
+	  createdb reg
+	  psql reg < /tmp/artifacts/before
+	  psql reg < /tmp/artifacts/after
+	  psql reg < /tmp/artifacts/unsure
+    - store-artifacts:
+        path: /tmp/artifacts
 
 workflows:
   version: 2
   pipeline:
     jobs:
     - convert
-    #- test
+    - test
