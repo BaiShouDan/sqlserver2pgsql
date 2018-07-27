@@ -22,8 +22,8 @@ jobs:
         path: /tmp/artifacts
     - persist_to_workspace:
         root: /tmp/artifacts
-	paths:
-	  - all_files.tgz
+        paths:
+          - all_files.tgz
 
   test:
     docker: [{image: "postgres:10-alpine"}]
@@ -39,11 +39,11 @@ jobs:
         name: Executing tests
         environment:
         command: |
-	  tar xzf /tmp/artifacts/all_files.tgz
-	  createdb reg
-	  psql reg < /tmp/artifacts/before
-	  psql reg < /tmp/artifacts/after
-	  psql reg < /tmp/artifacts/unsure
+          tar xzf /tmp/artifacts/all_files.tgz
+          createdb reg
+          psql reg < /tmp/artifacts/before
+          psql reg < /tmp/artifacts/after
+          psql reg < /tmp/artifacts/unsure
     - store-artifacts:
         path: /tmp/artifacts
 
