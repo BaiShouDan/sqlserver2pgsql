@@ -18,6 +18,8 @@ jobs:
           # Inject APT packaged dependencies.
           PERL5LIB: /usr/lib/x86_64-linux-gnu/perl5/5.24:/usr/share/perl5
         command: prove --verbose
+    - store-artifacts:
+        path: /tmp/artifacts
 
 workflows:
   version: 2
