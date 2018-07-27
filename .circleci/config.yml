@@ -21,7 +21,7 @@ jobs:
     - store-artifacts:
         path: /tmp/artifacts
     - persist_to_workspace:
-        root: /tmp/artifacts
+        root: /tmp/workspace
         paths:
           - all_files.tgz
 
@@ -30,22 +30,20 @@ jobs:
     steps:
     working_directory: /tmp/sqlserver2pgsql
     attach_worskpace:
-      at: /tmp/artifacts
+      at: /tmp/workspace
     steps:
-    - run:
-        name: Install debian packages
     - checkout
     - run:
         name: Executing tests
         environment:
         command: |
-          tar xzf /tmp/artifacts/all_files.tgz
+          tar xzf /tmp/workspace/all_files.tgz
           createdb reg
           psql reg < /tmp/artifacts/before
           psql reg < /tmp/artifacts/after
           psql reg < /tmp/artifacts/unsure
     - store-artifacts:
-        path: /tmp/artifacts
+        path: /tmp/workspace
 
 workflows:
   version: 2
