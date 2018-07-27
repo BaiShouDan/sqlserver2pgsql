@@ -42,8 +42,6 @@ jobs:
           psql reg < /tmp/artifacts/before
           psql reg < /tmp/artifacts/after
           psql reg < /tmp/artifacts/unsure
-    - store-artifacts:
-        path: /tmp/workspace
 
 workflows:
   version: 2
@@ -51,3 +49,5 @@ workflows:
     jobs:
     - convert
     - test
+        requires:
+          - convert
